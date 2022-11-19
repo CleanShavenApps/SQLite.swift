@@ -134,6 +134,15 @@ public extension Connection {
         let fn = try createFunction(function, 2, deterministic) { args in block(args[0].map(value), args[1].map(value)) }
         return { a, b in fn([a, b]) }
     }
+    
+    // MARK: -
+    
+    func createFunction<Z: Value, A: Value, B: Value, C: Value, D: Value>(_ function: String, deterministic: Bool = false,
+                                                      _ block: @escaping (A, B?, C, D) -> Z) throws -> (Expression<A>, Expression<B?>, Expression<C>, Expression<D>)
+    -> Expression<Z> {
+        let fn = try createFunction(function, 4, deterministic) { args in block(value(args[0]), args[1].map(value), value(args[2]), value(args[3])) }
+        return { a, b, c, d in fn([a, b, c, d]) }
+    }
 
     // MARK: -
 
